@@ -40,7 +40,7 @@ if st.button("Resume PDF Banao"):
         pdf.set_font("Arial", '', 12)
         pdf.multi_cell(0, 8, education)
         
-        pdf_data = bytes(pdf.output(dest='S'))
+           pdf_data = pdf.output(dest='S').encode('latin-1')
         st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
     else:
         st.error("Name aur Email zaruri hai")
