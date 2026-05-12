@@ -29,18 +29,16 @@ if st.button("Resume PDF Banao"):
             pdf.cell(0, 8, f"- {skill.strip()}", ln=True)
         pdf.ln(5)
         
-        pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Experience", ln=True)
-        pdf.set_font("Arial", '', 12)
-        pdf.multi_cell(0, 8, experience)
-        pdf.ln(5)
-        
-        pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Education", ln=True)
-        pdf.set_font("Arial", '', 12)
-        pdf.multi_cell(0, 8, education)
-        
-        pdf_data = pdf.output(dest='S').encode('latin-1')
-        st.download_button(label="Download PDF",data=pdf_data,file_name="resume.pdf")
-    else:
-        st.error("Name aur Email zaruri hai")
+       pdf.set_font("Arial", 'B', 14)
+pdf.cell(0, 10, "Experience", ln=True)
+pdf.set_font("Arial", '', 12)
+pdf.multi_cell(0, 8, experience)
+pdf.ln(5)
+
+pdf.set_font("Arial", 'B', 14)
+pdf.cell(0, 10, "Education", ln=True)
+pdf.set_font("Arial", '', 12)
+pdf.multi_cell(0, 8, education)
+
+pdf_data = pdf.output(dest='S').encode('latin-1')
+st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
