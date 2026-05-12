@@ -42,4 +42,3 @@ if st.button("Resume PDF Banao"):
         st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
     else:
         st.error("Name aur Email zaruri hai")
-st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
