@@ -1,5 +1,5 @@
 import streamlit as st
-from fpdf import FPDF2
+from fpdf2 import FPDF
 
 st.title("Resume Builder App")
 
@@ -14,10 +14,8 @@ if st.button("Resume PDF Banao"):
     if name.strip() and email.strip():
         pdf = FPDF()
         pdf.add_page()
-        
         pdf.set_font("Arial", 'B', 16)
         pdf.cell(0, 10, name, ln=True, align='C')
-        
         pdf.set_font("Arial", '', 12)
         pdf.cell(0, 10, f"Email: {email} | Phone: {phone}", ln=True, align='C')
         pdf.ln(10)
@@ -29,16 +27,19 @@ if st.button("Resume PDF Banao"):
             pdf.cell(0, 8, f"- {skill.strip()}", ln=True)
         pdf.ln(5)
         
-       pdf.set_font("Arial", 'B', 14)
-pdf.cell(0, 10, "Experience", ln=True)
-pdf.set_font("Arial", '', 12)
-pdf.multi_cell(0, 8, experience)
-pdf.ln(5)
-
-pdf.set_font("Arial", 'B', 14)
-pdf.cell(0, 10, "Education", ln=True)
-pdf.set_font("Arial", '', 12)
-pdf.multi_cell(0, 8, education)
-
-pdf_data = pdf.output(dest='S').encode('latin-1')
+        pdf.set_font("Arial", 'B', 14)
+        pdf.cell(0, 10, "Experience", ln=True)
+        pdf.set_font("Arial", '', 12)
+        pdf.multi_cell(0, 8, experience)
+        pdf.ln(5)
+        
+        pdf.set_font("Arial", 'B', 14)
+        pdf.cell(0, 10, "Education", ln=True)
+        pdf.set_font("Arial", '', 12)
+        pdf.multi_cell(0, 8, education)
+        
+        pdf_data = pdf.output(dest='S').encode('latin-1')
+        st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
+    else:
+        st.error("Name aur Email zaruri hai")
 st.download_button(label="Download PDF", data=pdf_data, file_name="resume.pdf")
