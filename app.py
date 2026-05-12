@@ -1,7 +1,3 @@
-import subprocess
-import sys
-subprocess.check_call([sys.executable, "-m", "pip", "install", "reportlab"])
-
 import streamlit as st
 import io
 from reportlab.pdfgen import canvas
