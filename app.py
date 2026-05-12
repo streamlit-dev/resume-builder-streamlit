@@ -1,63 +1,64 @@
 import streamlit as st
-from fpdf import FPDF
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 import io
 
 st.title("Resume Builder")
 
 name = st.text_input("Name")
-email = st.text_input("Email")
+email = st.text_input("Email") 
 phone = st.text_input("Phone")
 skills = st.text_area("Skills - comma se alag karke likho")
 experience = st.text_area("Experience")
 
 if st.button("Resume PDF Banao"):
-
     if name.strip() and email.strip():
-
-        pdf = FPDF()
-        pdf.add_page()
-
+        buffer = io.BytesIO()
+        p = canvas.Canvas(buffer, pagesize=letter)
+        width, height = letter
+        
+        y = height - 50  # Upar se start
+        
         # Name
-        pdf.set_font("Arial", 'B', 16)
-        pdf.cell(0, 10, name, ln=True, align='C')
-
-        # Email & Phone
-        pdf.set_font("Arial", '', 12)
-        pdf.cell(0, 10, f"Email: {email} | Phone: {phone}", ln=True, align='C')
-
-        pdf.ln(10)
-
+        p.setFont("Helvetica-Bold", 18)
+        p.drawCentredString(width/2, y, name)
+        y -= 30
+        
+        # Email Phone
+        p.setFont("Helvetica", 12)
+        p.drawCentredString(width/2, y, f"Email: {email} | Phone: {phone}")
+        y -= 40
+        
         # Skills
-        pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Skills", ln=True)
-
-        pdf.set_font("Arial", '', 12)
-
+        p.setFont("Helvetica-Bold", 14)
+        p.drawString(50, y, "Skills:")
+        y -= 20
+        p.setFont("Helvetica", 12)
         for skill in skills.split(','):
             if skill.strip():
-                pdf.cell(0, 8, f"- {skill.strip()}", ln=True)
-
-        pdf.ln(5)
-
+                p.drawString(70, y, f"- {skill.strip()}")
+                y -= 15
+        y -= 10
+        
         # Experience
-        pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Experience", ln=True)
-
-        pdf.set_font("Arial", '', 12)
-        pdf.multi_cell(0, 8, experience)
-
-        # PDF ko bytes me convert karo
-        pdf_bytes = pdf.output(dest='S').encode('latin-1')
-
-        st.success("PDF Ban Gayi!")
-
-        # Download Button
+        p.setFont("Helvetica-Bold", 14)
+        p.drawString(50, y, "Experience:")
+        y -= 20
+        p.setFont("Helvetica", 12)
+        for line in experience.split('\n'):
+            p.drawString(70, y, line)
+            y -= 15
+        
+        p.save()
+        buffer.seek(0)
+        
+        st.success("PDF Ban Gayi! ✅")
         st.download_button(
             label="📥 Download Resume PDF",
-            data=pdf_bytes,
-            file_name="Suman_Resume.pdf",
+            data=buffer,
+            file_name="resume.pdf",
             mime="application/pdf"
         )
-
     else:
         st.error("Name aur Email zaruri hai")
+        
